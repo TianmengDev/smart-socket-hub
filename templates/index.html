@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天蒙洗衣机管理系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>天蒙洗衣机管理系统</h1>
+            <div class="time" id="currentTime"></div>
+        </header>
+        
+        <main>
+            <div class="status-panel">
+                <h2>插座状态</h2>
+                <div class="status-card">
+                    <div class="status-item">
+                        <span class="label">插座状态:</span>
+                        <span class="status-value" id="socketStatus">检测中...</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Wi-Fi信号:</span>
+                        <span class="signal-value" id="wifiSignal">检测中...</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">最后更新:</span>
+                        <span class="time-value" id="lastUpdate">-</span>
+                    </div>
+                </div>
+                
+                <div class="control-buttons">
+                    <button class="btn btn-on" onclick="requestControl('on')" id="btnOn">开启插座</button>
+                    <button class="btn btn-off" onclick="requestControl('off')" id="btnOff">关闭插座</button>
+                    <button class="btn btn-refresh" onclick="refreshStatus()" id="btnRefresh">刷新状态</button>
+                </div>
+            </div>
+        </main>
+        
+        <div class="connection-status" id="connectionStatus">
+            <span class="status-dot"></span>
+            <span class="status-text">连接状态</span>
+        </div>
+    </div>
+    
+    <!-- 验证码对话框 -->
+    <div class="modal" id="verificationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>安全验证</h3>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="verificationMessage">验证码已发送到钉钉群，请输入验证码:</p>
+                <input type="text" id="verificationCode" placeholder="请输入6位验证码" maxlength="6">
+                <div class="modal-buttons">
+                    <button class="btn btn-primary" onclick="submitVerification()">确认</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 消息提示 -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html> 
